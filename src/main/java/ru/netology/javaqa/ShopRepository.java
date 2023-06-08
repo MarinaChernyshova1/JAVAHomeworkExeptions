@@ -1,5 +1,7 @@
 package ru.netology.javaqa;
 
+import java.rmi.AlreadyBoundException;
+
 public class ShopRepository {
     private Product[] products = new Product[0];
 
@@ -18,7 +20,19 @@ public class ShopRepository {
         }
         tmp[tmp.length - 1] = product;
         return tmp;
+
+
     }
+
+    public Product compareId() {
+        Product[] tmp = new Product[products.length];
+        for (Product product : products) {
+            if (tmp[0] != products[0])
+                return product;
+        }
+        return null;
+    }
+
 
     /**
      * Метод добавления товара в репозиторий
@@ -26,8 +40,14 @@ public class ShopRepository {
      * @param product — добавляемый товар
      */
     public void add(Product product) {
+        Product addPastCompare = compareId();
+        if (addPastCompare == null) {
+            throw new AlreadyExistsException();
+        }
+
         products = addToArray(products, product);
     }
+
 
     public Product[] findAll() {
         return products;
@@ -39,7 +59,6 @@ public class ShopRepository {
         if (removeById == null) {
             throw new NotFoundException(id);
         }
-
         Product[] tmp = new Product[products.length - 1];
         int copyToIndex = 0;
         for (Product product : products) {
@@ -53,7 +72,6 @@ public class ShopRepository {
 
     public Product findById(int id) {
         Product[] tmp = new Product[products.length];
-
         for (Product product : products) {
             if (product.getId() == id) {
                 return product;
@@ -63,13 +81,4 @@ public class ShopRepository {
     }
 
 
-  //public void Product removeById(int id) {
-
-   //     if (findById(id) == null) {
-   //         throw new NotFoundException(
-  //                  "ID не может быть отрицательным: " + id
-  //          );
-   //        remove(id);
-  //      }
-  //  }
 }

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShopRepositoryTest {
 
     @Test
-    public void testWhenIdExists (){
+    public void testWhenIdExists ()  {
         ShopRepository repository = new ShopRepository();
         Product product1 = new Product(1, "Кружка", 5000);
         Product product2 = new Product(2, "Термос", 5500);
@@ -24,11 +24,10 @@ class ShopRepositoryTest {
         Product[] expected = {product1, product3};
 
         Assertions.assertArrayEquals(expected,actual);
-
-
     }
+
     @Test
-    public void testWhenTrowsNotFoundException (){
+    public void testWhenTrowsNotFoundException ()  {
         ShopRepository repository = new ShopRepository();
         Product product1 = new Product(1, "Кружка", 5000);
         Product product2 = new Product(2, "Термос", 5500);
@@ -42,4 +41,23 @@ class ShopRepositoryTest {
             repository.remove(4);
         });
     }
+    @Test
+    public void testWhenIdAlreadyExists ()  {
+        ShopRepository repository = new ShopRepository();
+        Product product1 = new Product(1, "Кружка", 5000);
+        Product product2 = new Product(3, "Термос", 5500);
+        Product product3 = new Product(3, "Котелок", 6000);
+
+        repository.add(product1);
+        repository.add(product2);
+        repository.add(product3);
+
+
+        assertThrows(AlreadyExistsException.class, ()->{
+            repository.compareId();
+        });
+    }
+
+
+
 }
