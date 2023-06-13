@@ -52,10 +52,15 @@ class ShopRepositoryTest {
         repository.add(product2);
         repository.add(product3);
 
-
-        assertThrows(AlreadyExistsException.class, ()->{
-            repository.compareId();
+        Assertions.assertThrows(AlreadyExistsException.class,
+                ()->{
+            repository.add();
         });
+
+
+
+
+
     }
 
 

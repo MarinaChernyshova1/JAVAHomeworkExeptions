@@ -14,23 +14,17 @@ public class ShopRepository {
      * но с добавлением нового элемента в конец
      */
     private Product[] addToArray(Product[] current, Product product) {
+        if ((findById(product.getId)) != null) {
+
+            throw new AlreadyExistsException();
+        }
+
         Product[] tmp = new Product[current.length + 1];
         for (int i = 0; i < current.length; i++) {
             tmp[i] = current[i];
         }
         tmp[tmp.length - 1] = product;
         return tmp;
-
-
-    }
-
-    public Product compareId() {
-        Product[] tmp = new Product[products.length];
-        for (Product product : products) {
-            if (tmp[0] != products[0])
-                return product;
-        }
-        return null;
     }
 
 
@@ -40,11 +34,6 @@ public class ShopRepository {
      * @param product — добавляемый товар
      */
     public void add(Product product) {
-        Product addPastCompare = compareId();
-        if (addPastCompare == null) {
-            throw new AlreadyExistsException();
-        }
-
         products = addToArray(products, product);
     }
 
@@ -55,8 +44,9 @@ public class ShopRepository {
 
     // Этот способ мы рассматривали в теории в теме про композицию
     public void remove(int id) {
-        Product removeById = findById(id);
-        if (removeById == null) {
+        Product removedProduct;
+        removedProduct = findById(id);
+        if (removedProduct == null) {
             throw new NotFoundException(id);
         }
         Product[] tmp = new Product[products.length - 1];
@@ -71,7 +61,7 @@ public class ShopRepository {
     }
 
     public Product findById(int id) {
-        Product[] tmp = new Product[products.length];
+
         for (Product product : products) {
             if (product.getId() == id) {
                 return product;
